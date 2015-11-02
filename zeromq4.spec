@@ -2,7 +2,7 @@
 
 Name:           zeromq4
 Version:        4.1.4
-Release:        1%{?dist}
+Release:        1
 Summary:        Software library for fast, message-based applications
 
 Group:          System Environment/Libraries
