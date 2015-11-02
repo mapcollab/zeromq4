@@ -1,8 +1,8 @@
 %bcond_without pgm
 
 Name:           zeromq4
-Version:        4.0.4
-Release:        2%{?dist}
+Version:        4.1.4
+Release:        1%{?dist}
 Summary:        Software library for fast, message-based applications
 
 Group:          System Environment/Libraries
@@ -104,6 +104,9 @@ make check
 
 
 %changelog
+* Mon Nov 2 2015 Tomasz Rostanski <tomasz.rostanski@thalesgroup.com> - 4.1.4-1
+- updated to 4.1.4
+
 * Mon Sep 22 2014 Thomas Spura <tomspur@fedoraproject.org> - 4.0.4-2
 - fix buildroot macros (#1069556)
 
