@@ -8,7 +8,7 @@ Summary:        Software library for fast, message-based applications
 Group:          System Environment/Libraries
 License:        LGPLv3+ with exceptions
 URL:            http://www.zeromq.org/
-Source0:        http://download.zeromq.org/zeromq-%{version}.tar.gz
+Source0:        %{name}-%{version}.tar.gz
 BuildRequires:  glib2-devel
 BuildRequires:  libuuid-devel
 BuildRequires:  libsodium-devel
@@ -46,16 +46,12 @@ developing applications that use %{name} 4.x.
 
 
 %prep
-%setup -qn zeromq-%{version}
+%setup -qn %{name}-%{version}
 chmod -x src/tcp.cpp
 chmod -x src/dist.cpp
 
-# fix ChangeLog enconding
-/usr/bin/iconv -f iso8859-1 -t utf-8 ChangeLog > _ChangeLog && \
-    %{__mv} -f _ChangeLog ChangeLog
-
-# remove all files in foreign except Makefiles
-rm -v $(find foreign -type f | grep -v Makefile)
+# Generate configure script
+./autogen.sh
 
 # Don't turn warnings into errors
 sed -i "s/libzmq_werror=\"yes\"/libzmq_werror=\"no\"/g" \
@@ -91,7 +87,7 @@ make check
 
 
 %files
-%doc AUTHORS ChangeLog COPYING COPYING.LESSER NEWS
+%doc AUTHORS COPYING COPYING.LESSER NEWS
 %{_bindir}/curve_keygen
 %{_libdir}/libzmq.so.*
 
