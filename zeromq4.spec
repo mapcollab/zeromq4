@@ -2,7 +2,7 @@
 
 Name:           zeromq4
 Version:        4.1.4
-Release:        1
+Release:        2
 Summary:        Software library for fast, message-based applications
 
 Group:          System Environment/Libraries
@@ -100,6 +100,12 @@ make check
 
 
 %changelog
+* Mon Nov 09 2015 Tomasz Rostanski <tomasz.rostanski@thalesgroup.com.pl> 4.1.4-2
+- tito: use ReleaseTagger (tomasz.rostanski@thalesgroup.com.pl)
+- Fix test_filter_ipc for cleared supplementary groups (ab@fmap.me)
+- zeromq4.spec: remove dist name from rpm version
+  (tomasz.rostanski@thalesgroup.com.pl)
+
 * Mon Nov 2 2015 Tomasz Rostanski <tomasz.rostanski@thalesgroup.com> - 4.1.4-1
 - updated to 4.1.4
 
