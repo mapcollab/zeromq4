@@ -2,7 +2,7 @@
 
 Name:           zeromq4
 Version:        4.1.4
-Release:        2
+Release:        3
 Summary:        Software library for fast, message-based applications
 
 Group:          System Environment/Libraries
@@ -100,6 +100,9 @@ rm %{buildroot}%{_libdir}/libzmq.la
 
 
 %changelog
+* Tue Nov 10 2015 Tomasz Rostanski <tomasz.rostanski@thalesgroup.com.pl> 4.1.4-3
+- zeromq4.spec: disable check (tomasz.rostanski@thalesgroup.com.pl)
+
 * Mon Nov 09 2015 Tomasz Rostanski <tomasz.rostanski@thalesgroup.com.pl> 4.1.4-2
 - tito: use ReleaseTagger (tomasz.rostanski@thalesgroup.com.pl)
 - Fix test_filter_ipc for cleared supplementary groups (ab@fmap.me)
