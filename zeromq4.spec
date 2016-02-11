@@ -2,7 +2,7 @@
 
 Name:           zeromq4
 Version:        4.1.4
-Release:        3
+Release:        4
 Summary:        Software library for fast, message-based applications
 
 Group:          System Environment/Libraries
@@ -98,6 +98,23 @@ rm %{buildroot}%{_libdir}/libzmq.la
 
 
 %changelog
+* Thu Feb 11 2016 Tomasz Rostanski <tomasz.rostanski@thalesgroup.com> 4.1.4-4
+- zeromq4.spec: do not install man pages (tomasz.rostanski@thalesgroup.com)
+- Updated .gitignore (ph@imatix.com)
+- Updated NEWS for release 4.1.4 (ph@imatix.com)
+- Updated NEWS (ph@imatix.com)
+- Add missing support for IPv6 link local addresses (which include %% followed
+  by the interface name) (Sathish_Yenna@dell.com)
+- Updated NEWS for #1315 (ph@imatix.com)
+- backport https://github.com/zeromq/libzmq/pull/1604 (inndie@gmail.com)
+- Backported fix for #1644 (ph@imatix.com)
+- Fix a bug when stream_engine try to set alreadt set metadata
+  (somdoron@gmail.com)
+- ported #1394 from libzmq (sergey.nikulov@gmail.com)
+- Updated NEWS (ph@imatix.com)
+- Problem: return code of sodium_init() is not checked. (constantin@rack.li)
+- Revert "stdint.h is available in VS2008 (1500)" (benjaminrk@gmail.com)
+
 * Tue Nov 10 2015 Tomasz Rostanski <tomasz.rostanski@thalesgroup.com.pl> 4.1.4-3
 - zeromq4.spec: disable check (tomasz.rostanski@thalesgroup.com.pl)
 
