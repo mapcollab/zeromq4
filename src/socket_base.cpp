@@ -598,6 +598,8 @@ int zmq::socket_base_t::connect (const char *addr_)
         //  Do some basic sanity checks on tcp:// address syntax
         //  - hostname starts with digit or letter, with embedded '-' or '.'
         //  - IPv6 address may contain hex chars and colons.
+        //  - IPv6 link local address may contain % followed by interface name / zone_id
+        //    (Reference: https://tools.ietf.org/html/rfc4007)
         //  - IPv4 address may contain decimal digits and dots.
         //  - Address must end in ":port" where port is *, or numeric
         //  - Address may contain two parts separated by ':'
@@ -608,8 +610,8 @@ int zmq::socket_base_t::connect (const char *addr_)
             check++;
             while (isalnum  (*check)
                 || isxdigit (*check)
-                || *check == '.' || *check == '-' || *check == ':'|| *check == ';'
-                || *check == ']')
+                || *check == '.' || *check == '-' || *check == ':' || *check == '%'
+                || *check == ';' || *check == ']')
                 check++;
         }
         //  Assume the worst, now look for success
@@ -1234,12 +1236,12 @@ int zmq::socket_base_t::monitor (const char *addr_, int events_)
     int linger = 0;
     int rc = zmq_setsockopt (monitor_socket, ZMQ_LINGER, &linger, sizeof (linger));
     if (rc == -1)
-        stop_monitor ();
+        stop_monitor (false);
 
     //  Spawn the monitor socket endpoint
     rc = zmq_bind (monitor_socket, addr_);
     if (rc == -1)
-         stop_monitor ();
+         stop_monitor (false);
     return rc;
 }
 
@@ -1332,10 +1334,10 @@ void zmq::socket_base_t::monitor_event (int event_, int value_, const std::strin
     }
 }
 
-void zmq::socket_base_t::stop_monitor (void)
+void zmq::socket_base_t::stop_monitor (bool send_monitor_stopped_event_)
 {
     if (monitor_socket) {
-        if (monitor_events & ZMQ_EVENT_MONITOR_STOPPED)
+        if ((monitor_events & ZMQ_EVENT_MONITOR_STOPPED) && send_monitor_stopped_event_)
             monitor_event (ZMQ_EVENT_MONITOR_STOPPED, 0, "");
         zmq_close (monitor_socket);
         monitor_socket = NULL;
