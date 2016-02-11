@@ -16,6 +16,8 @@ BuildRequires:  libsodium-devel
 BuildRequires:  openpgm-devel
 %endif
 BuildRequires:  chrpath
+BuildRequires:  asciidoc
+BuildRequires:  xmlto
 
 Provides:       zeromq3 = %{version}-%{release}
 Obsoletes:      zeromq3 < 3.2.4-2
