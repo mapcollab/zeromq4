@@ -2,7 +2,7 @@
 
 Name:           zeromq4
 Version:        4.1.4
-Release:        4
+Release:        5
 Summary:        Software library for fast, message-based applications
 
 Group:          System Environment/Libraries
@@ -102,6 +102,12 @@ rm %{buildroot}%{_libdir}/libzmq.la
 
 
 %changelog
+* Thu Feb 11 2016 Tomasz Rostanski <tomasz.rostanski@thalesgroup.com> 4.1.4-5
+- zeromq4.spec: add build dependency of asciidoc and xmlto
+  (tomasz.rostanski@thalesgroup.com)
+- Revert "zeromq4.spec: do not install man pages"
+  (tomasz.rostanski@thalesgroup.com)
+
 * Thu Feb 11 2016 Tomasz Rostanski <tomasz.rostanski@thalesgroup.com> 4.1.4-4
 - zeromq4.spec: do not install man pages (tomasz.rostanski@thalesgroup.com)
 - Updated .gitignore (ph@imatix.com)
