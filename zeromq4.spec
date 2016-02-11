@@ -95,6 +95,8 @@ rm %{buildroot}%{_libdir}/libzmq.la
 %{_libdir}/libzmq.so
 %{_libdir}/pkgconfig/libzmq.pc
 %{_includedir}/zmq*
+%{_mandir}/man3/zmq*.3*
+%{_mandir}/man7/zmq*.7*
 
 
 %changelog
