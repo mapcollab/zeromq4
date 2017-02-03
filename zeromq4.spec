@@ -102,6 +102,9 @@ rm %{buildroot}%{_libdir}/libzmq.la
 
 
 %changelog
+* Fri Feb 03 2017 Tomasz Rostanski <tomasz.rostanski@thalesgroup.com> 4.1.6-1
+- new package built with tito
+
 * Tue Nov 10 2015 Tomasz Rostanski <tomasz.rostanski@thalesgroup.com.pl> 4.1.4-3
 - zeromq4.spec: disable check (tomasz.rostanski@thalesgroup.com.pl)
 
