@@ -9,32 +9,46 @@ if(APPLE)
   option(ZMQ_BUILD_FRAMEWORK "Build as OS X framework" ON)
 endif()
 
-if(WIN32)
-option(WITH_TWEETNACL "Build with tweetnacl" OFF)
-else()
-option(WITH_TWEETNACL "Build with tweetnacl" ON)
-endif()
 
-if(WITH_TWEETNACL)
-  add_definitions(-DHAVE_TWEETNACL -DHAVE_LIBSODIUM)
-  include_directories(
-    tweetnacl/contrib/randombytes
-    tweetnacl/src
-    )
+# Select curve encryption library, defaults to tweetnacl
+# To use libsodium instead, use --with-libsodium (must be installed)
+# To disable curve, use --disable-curve
 
-  set(TWEETNACL_SOURCES
-    tweetnacl/src/tweetnacl.c
-    )
-  if(WIN32)
-    list(APPEND TWEETNACL_SOURCES tweetnacl/contrib/randombytes/winrandom.c)
-  else()
-    list(APPEND TWEETNACL_SOURCES tweetnacl/contrib/randombytes/devurandom.c)
-  endif()
-else()
-  find_library(SODIUM_FOUND sodium)
-endif()
+option (WITH_LIBSODIUM "Use libsodium instead of built-in tweetnacl" OFF)
+option (ENABLE_CURVE "Enable CURVE security" ON)
 
+if (NOT ENABLE_CURVE)
+    message (STATUS "CURVE security is disabled")
 
+elseif (WITH_LIBSODIUM)
+    find_package (Sodium)
+    if (SODIUM_FOUND)
+        message (STATUS "Using libsodium for CURVE security")
+        include_directories (${SODIUM_INCLUDE_DIRS})
+
+        # On Solaris, libsodium depends on libssp
+        if (${CMAKE_SYSTEM_NAME} MATCHES "SunOS")
+            target_link_libraries (libzmq ssp)
+        endif ()
+        set (ZMQ_USE_LIBSODIUM 1)
+        set (ZMQ_HAVE_CURVE 1)
+    else ()
+        message (FATAL_ERROR
+            "libsodium is not installed. Install it, then run CMake again")
+    endif ()
+
+else ()
+    message (STATUS "Using tweetnacl for CURVE security")
+    set (ZMQ_USE_TWEETNACL 1)
+    set (ZMQ_HAVE_CURVE 1)
+    set (TWEETNACL_SOURCES tweetnacl/src/tweetnacl.c)
+    if (WIN32)
+        list(APPEND TWEETNACL_SOURCES tweetnacl/contrib/randombytes/winrandom.c)
+    else ()
+        list(APPEND TWEETNACL_SOURCES tweetnacl/contrib/randombytes/devurandom.c)
+    endif ()
+    include_directories (tweetnacl/contrib/randombytes tweetnacl/src)
+endif ()
 
 set(POLLER "" CACHE STRING "Choose polling system. valid values are
                             kqueue, epoll, devpoll, poll or select [default=autodetect]")
@@ -342,7 +356,9 @@ endif()
 #-----------------------------------------------------------------------------
 # default to Release build
 
-if(NOT CMAKE_BUILD_TYPE)
+if(NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
+  # CMAKE_BUILD_TYPE is not used for multi-configuration generators like Visual Studio/XCode
+  # which instead use CMAKE_CONFIGURATION_TYPES
   set(CMAKE_BUILD_TYPE Release CACHE STRING
       "Choose the type of build, options are: None Debug Release RelWithDebInfo MinSizeRel."
       FORCE)
@@ -451,7 +467,8 @@ set(cxx-sources
         xpub.cpp
         xsub.cpp
         zmq.cpp
-        zmq_utils.cpp)
+        zmq_utils.cpp
+        config.hpp)
 
 set(rc-sources version.rc)
 
@@ -604,7 +621,7 @@ if(MSVC)
     RELEASE_POSTFIX "${MSVC_TOOLSET}-mt-s-${ZMQ_VERSION_MAJOR}_${ZMQ_VERSION_MINOR}_${ZMQ_VERSION_PATCH}"
     RELWITHDEBINFO_POSTFIX "${MSVC_TOOLSET}-mt-s-${ZMQ_VERSION_MAJOR}_${ZMQ_VERSION_MINOR}_${ZMQ_VERSION_PATCH}"
     DEBUG_POSTFIX "${MSVC_TOOLSET}-mt-sgd-${ZMQ_VERSION_MAJOR}_${ZMQ_VERSION_MINOR}_${ZMQ_VERSION_PATCH}"
-    COMPILE_FLAGS "/D ZMQ_STATIC"
+    COMPILE_FLAGS "/DZMQ_STATIC"
     OUTPUT_NAME "libzmq")
 else()
     add_library(libzmq SHARED ${sources} ${public_headers} ${html-docs} ${readme-docs} ${zmq-pkgconfig})

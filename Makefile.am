@@ -2,7 +2,7 @@ ACLOCAL_AMFLAGS = -I config
 
 SUBDIRS = doc
 
-DIST_SUBDIRS = builds/msvc doc
+DIST_SUBDIRS = doc builds builds/msvc
 
 pkgconfig_DATA = src/libzmq.pc
 
@@ -232,7 +232,7 @@ libzmq_la_CPPFLAGS =
 libzmq_la_CXXFLAGS = @LIBZMQ_EXTRA_CXXFLAGS@
 libzmq_la_LIBADD =
 
-if HAVE_SODIUM
+if USE_LIBSODIUM
 libzmq_la_CPPFLAGS += ${sodium_CFLAGS}
 libzmq_la_LIBADD += ${sodium_LIBS}
 endif
@@ -617,6 +617,8 @@ EXTRA_DIST = \
 	MAINTAINERS	\
 	src/libzmq.pc.cmake.in \
 	src/libzmq.vers \
+	src/version.rc.in \
+	tests/CMakeLists.txt \
 	tweetnacl \
 	tools/curve_keygen.cpp
 
