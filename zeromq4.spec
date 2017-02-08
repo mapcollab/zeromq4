@@ -103,6 +103,9 @@ rm %{buildroot}%{_libdir}/libzmq.la
 
 
 %changelog
+* Wed Feb 08 2017 Michal Gawlik <michal.gawlik@thalesgroup.com> 4.2.1-1
+- new package built with tito
+
 * Mon Feb 06 2017 Michal Gawlik <michal.gawlik@thalesgroup.com> 4.2.1-1
 - bump to upstream 4.2.1
 
