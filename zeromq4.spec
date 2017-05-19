@@ -2,7 +2,7 @@
 
 Name:           zeromq4
 Version:        4.2.1
-Release:        1%{?dist}
+Release:        2%{?dist}
 Summary:        Software library for fast, message-based applications
 
 Group:          System Environment/Libraries
@@ -103,6 +103,12 @@ rm %{buildroot}%{_libdir}/libzmq.la
 
 
 %changelog
+* Fri May 19 2017 Michal Gawlik <michal.gawlik@thalesgroup.com> 4.2.1-2
+- Problem: REP leaves label msgs for dead REQ in pipe (luca.boccassi@gmail.com)
+- Revert "Problem: REP leaves label msgs for dead REQ in pipe"
+  (michal.gawlik@thalesgroup.com)
+- Problem: REP leaves label msgs for dead REQ in pipe (luca.boccassi@gmail.com)
+
 * Wed Feb 08 2017 Michal Gawlik <michal.gawlik@thalesgroup.com> 4.2.1-1
 - new package built with tito
 
